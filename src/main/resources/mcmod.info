@@ -1,0 +1,14 @@
+[{
+	"modid": "skeletonhorses",
+	"name": "Skeleton Horse Tweaks",
+	"description": "Allows Skeleton Horses to be tamed, to wear horse armour, and to carry chests.",
+	"version": "${version}",
+	"mcversion": "${mcversion}",
+	"url": "https://github.com/crazysnailboy/SkeletonHorses/releases",
+	"updateUrl": "",
+	"authorList": ["csb987"],
+	"credits": "",
+	"logoFile": "",
+	"screenshots": [],
+	"dependencies": []
+}]
