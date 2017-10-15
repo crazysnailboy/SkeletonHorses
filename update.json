@@ -1,20 +1,23 @@
 {
 	"homepage": "https://github.com/crazysnailboy/SkeletonHorses/releases",
 	"promos": {
-		"1.12.2-latest": "0.1",
-		"1.12.2-recommended": "0.1",
-		"1.12.1-latest": "0.1",
-		"1.12.1-recommended": "0.1",
-		"1.12-latest": "0.1",
-		"1.12-recommended": "0.1"
+		"1.12.2-latest": "0.1.1",
+		"1.12.2-recommended": "0.1.1",
+		"1.12.1-latest": "0.1.1",
+		"1.12.1-recommended": "0.1.1",
+		"1.12-latest": "0.1.1",
+		"1.12-recommended": "0.1.1"
 	},
 	"1.12.2": {
+		"0.1.1": "fixed shift-click texture bug on horse armor and shift-click of chest slots",
 		"0.1": "Initial alpha release"
 	},
 	"1.12.1": {
+		"0.1.1": "fixed shift-click texture bug on horse armor and shift-click of chest slots",
 		"0.1": "Initial alpha release"
 	},
 	"1.12": {
+		"0.1.1": "fixed shift-click texture bug on horse armor and shift-click of chest slots",
 		"0.1": "Initial alpha release"
 	}
 }

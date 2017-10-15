@@ -28,7 +28,7 @@ public class HorseArmorHandler extends ItemStackHandler implements IHorseArmorHa
 
 
 	@Override
-	protected void onContentsChanged(int slot)
+	public void onContentsChanged(int slot)
 	{
 		this.setHorseArmorStack(this.getStackInSlot(slot));
 	}

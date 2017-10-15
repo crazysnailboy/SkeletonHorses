@@ -1,10 +1,12 @@
 package net.crazysnailboy.mods.skeletonhorses.inventory;
 
 import net.crazysnailboy.mods.skeletonhorses.capability.armor.CapabilityHorseArmorHandler;
+import net.crazysnailboy.mods.skeletonhorses.capability.armor.HorseArmorHandler;
 import net.crazysnailboy.mods.skeletonhorses.capability.armor.IHorseArmorHandler;
 import net.crazysnailboy.mods.skeletonhorses.capability.chest.CapabilityHorseChestHandler;
 import net.crazysnailboy.mods.skeletonhorses.capability.chest.IHorseChestHandler;
 import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.HorseArmorType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
@@ -21,6 +23,8 @@ public class ContainerHorseInventory extends Container
 
 	private final IInventory horseInventory;
 	private final AbstractHorse horse;
+
+	private int inventorySize = 1;
 
 
 	public ContainerHorseInventory(IInventory playerInventory, IInventory horseInventory, final AbstractHorse horse, EntityPlayer player)
@@ -49,7 +53,22 @@ public class ContainerHorseInventory extends Container
 		if (horse.hasCapability(CapabilityHorseArmorHandler.HORSE_ARMOR_CAPABILITY, null))
 		{
 			IHorseArmorHandler capability = horse.getCapability(CapabilityHorseArmorHandler.HORSE_ARMOR_CAPABILITY, null);
-			this.addSlotToContainer(new SlotItemHandler(capability, 0, 8, 36));
+			this.addSlotToContainer(new SlotItemHandler(capability, 0, 8, 36)
+			{
+				@Override
+				public boolean isItemValid(ItemStack stack)
+				{
+					return HorseArmorType.isHorseArmor(stack.getItem());
+				}
+
+				@Override
+				public void onSlotChanged()
+				{
+			    	((HorseArmorHandler)this.getItemHandler()).onContentsChanged(this.getSlotIndex());
+				}
+			});
+
+			inventorySize = inventorySize + 1;
 		}
 
 
@@ -88,6 +107,7 @@ public class ContainerHorseInventory extends Container
 						this.addSlotToContainer(new SlotItemHandler(capability, l + k * 5, 80 + l * 18, 18 + k * 18));
 					}
 				}
+				inventorySize = inventorySize + 15;
 			}
 		}
 
@@ -133,9 +153,9 @@ public class ContainerHorseInventory extends Container
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
-			if (index < this.horseInventory.getSizeInventory())
+			if (index < inventorySize)
 			{
-				if (!this.mergeItemStack(itemstack1, this.horseInventory.getSizeInventory(), this.inventorySlots.size(), true))
+				if (!this.mergeItemStack(itemstack1, inventorySize, this.inventorySlots.size(), true))
 				{
 					return ItemStack.EMPTY;
 				}
@@ -154,7 +174,7 @@ public class ContainerHorseInventory extends Container
 					return ItemStack.EMPTY;
 				}
 			}
-			else if (this.horseInventory.getSizeInventory() <= 2 || !this.mergeItemStack(itemstack1, 2, this.horseInventory.getSizeInventory(), false))
+			else if (inventorySize <= 2 || !this.mergeItemStack(itemstack1, 2, inventorySize, false))
 			{
 				return ItemStack.EMPTY;
 			}
