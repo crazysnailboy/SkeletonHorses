@@ -4,19 +4,25 @@ import net.crazysnailboy.mods.skeletonhorses.capability.chest.CapabilityHorseChe
 import net.crazysnailboy.mods.skeletonhorses.capability.chest.IHorseChestHandler;
 import net.crazysnailboy.mods.skeletonhorses.common.network.message.HorseArmorSyncMessage;
 import net.crazysnailboy.mods.skeletonhorses.common.network.message.HorseChestSyncMessage;
+import net.crazysnailboy.mods.skeletonhorses.common.network.message.HorseGuiOpenMessage;
 import net.crazysnailboy.mods.skeletonhorses.entity.EntitySkeletonHorseHooks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntitySkeletonHorse;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 @EventBusSubscriber
@@ -70,6 +76,24 @@ public class EventHandlers
 	                horse.dropItem(Item.getItemFromBlock(Blocks.CHEST), 1);
 	                capability.setChested(false);
 				}
+			}
+		}
+	}
+
+
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public static void onGuiOpen(GuiOpenEvent event)
+	{
+		if (event.getGui() instanceof net.minecraft.client.gui.inventory.GuiScreenHorseInventory)
+		{
+			EntityPlayer player = Minecraft.getMinecraft().player;
+			if (player.getRidingEntity() instanceof EntitySkeletonHorse)
+			{
+				event.setCanceled(true);
+
+				AbstractHorse horse = (AbstractHorse)player.getRidingEntity();
+				SkeletonHorsesMod.NETWORK.sendToServer(new HorseGuiOpenMessage(horse));
 			}
 		}
 	}
